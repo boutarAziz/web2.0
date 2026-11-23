@@ -11,6 +11,9 @@ class Speciality(models.Model):
     name=models.CharField(max_length=255)
     created_at=models.DateTimeField(auto_now_add=True)
     update_at=models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name = 'Speciality'
+        verbose_name_plural = 'Specialities'
 
 class Doctor(User):
     licence_number = models.CharField(max_length=6,unique=True,validators=[MinLengthValidator(6),MaxLengthValidator(6)])
@@ -18,6 +21,10 @@ class Doctor(User):
     created_at=models.DateTimeField(auto_now_add=True)
     update_at=models.DateTimeField(auto_now=True)
     specialities=models.ManyToManyField("Speciality",related_name="doctors",blank=True)
+    class Meta:
+        verbose_name = 'Doctor'
+        verbose_name_plural = 'Doctors'
+
 
 number_validator=RegexValidator(
     regex=r'^\d{8}$',
@@ -25,7 +32,7 @@ number_validator=RegexValidator(
 )
 
 def validate_birth_date(v):
-    if v>timezone.localdate():
+    if v>=timezone.localdate():
         raise ValidationError("La date de naissance est invalide")
 
 class Patient(User):
@@ -34,5 +41,8 @@ class Patient(User):
     birth_date=models.DateField(validators=[validate_birth_date])
     created_at=models.DateTimeField(auto_now_add=True)
     update_at=models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name = 'Patient'
+        verbose_name_plural = 'Patients'
 
 
